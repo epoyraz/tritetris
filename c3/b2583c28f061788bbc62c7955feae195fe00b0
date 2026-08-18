@@ -1,0 +1,83 @@
+.gitignore
+  s_2912b411655335::t_764907cc680dce 1-2
+README.md
+  s_2912b411655335::t_1ac09b4c438c50 1-80
+index.html
+  s_2912b411655335::t_19e7323e821fcc 1-13
+package-lock.json
+  s_2912b411655335::t_9704756a14fab4 1-2467
+package.json
+  s_2912b411655335::t_ff000ad2f6aedf 1-35
+scripts/e2e.ts
+  s_2912b411655335::t_234b6177cf6e10 1-589
+scripts/test-engine.ts
+  s_2912b411655335::t_bfaaba807091d2 1-335
+src/client/App.tsx
+  s_2912b411655335::t_c19ccab03f2657 1-30
+src/client/input.ts
+  s_2912b411655335::t_13a697423b1ac4 1-92
+src/client/main.tsx
+  s_2912b411655335::t_edbc601f40c6a7 1-13
+src/client/net.ts
+  s_2912b411655335::t_5cc78d613ef1a1 1-328
+src/client/render.ts
+  s_2912b411655335::t_e2dd6cb21b513e 1-326
+src/client/screens/GameScreen.tsx
+  s_2912b411655335::t_53f4f7a561ec85 1-88
+src/client/screens/HomeScreen.tsx
+  s_2912b411655335::t_78f82ffe0a94a6 1-70
+src/client/screens/LobbyScreen.tsx
+  s_2912b411655335::t_f5963da2e6b57b 1-102
+src/client/screens/ResultsScreen.tsx
+  s_2912b411655335::t_8f4975e200c9c0 1-94
+src/client/session.ts
+  s_2912b411655335::t_ca3ff8d68faf33 1-222
+src/client/store.ts
+  s_2912b411655335::t_cfdc11f7dfcc5f 1-63
+src/client/styles.css
+  s_2912b411655335::t_26df899b37c5ca 1-534
+src/server/bot.ts
+  s_2912b411655335::t_59d26f3516016d 1-253
+src/server/index.ts
+  s_2912b411655335::t_45a89a95df77e1 1-200
+src/server/lobby.ts
+  s_2912b411655335::t_d11c00aefc7f91 1-504
+src/server/match.ts
+  s_2912b411655335::t_6d873931d45bb9 1-569
+src/server/static.ts
+  s_2912b411655335::t_cee3aa50945175 1-39
+src/server/util.ts
+  s_2912b411655335::t_7e2d0c7f75cd65 1-60
+src/shared/constants.ts
+  s_2912b411655335::t_5427fe032bb050 1-73
+src/shared/engine.ts
+  s_2912b411655335::t_dbce3b926500da 1-688
+src/shared/pieces.ts
+  s_2912b411655335::t_f38cda27025bb0 1-79
+src/shared/rng.ts
+  s_2912b411655335::t_8cf1cd7f64e8c9 1-51
+src/shared/types.ts
+  s_2912b411655335::t_4f6beccee81584 1-252
+tsconfig.json
+  s_2912b411655335::t_3b4806d1dcaba4 1-19
+tsconfig.server.json
+  s_2912b411655335::t_b0aed777c93db2 1-18
+vite.config.ts
+  s_2912b411655335::t_08060b1666764d 1-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "c3b2583c28f061788bbc62c7955feae195fe00b0",
+  "prompts": {},
+  "sessions": {
+    "s_2912b411655335": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "110d0bd3-8231-46c2-bba5-f36c7272d47f",
+        "model": "unknown"
+      },
+      "human_author": "Enes Poyraz <epoyraz.eth@googlemail.com>"
+    }
+  }
+}
