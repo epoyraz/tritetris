@@ -1,0 +1,61 @@
+src/server/lobby.ts
+  s_2912b411655335::t_dc88c98f81b6c4 3-4
+  s_2912b411655335::t_8167f770600805 46
+  s_2912b411655335::t_109c59c069a5dd 205,209-219
+  s_2912b411655335::t_cdb97fcac51f0f 267
+  s_2912b411655335::t_2afbca72963ce7 220-221
+src/shared/types.ts
+  s_2912b411655335::t_ea94fa09399a0c 218
+  s_2912b411655335::t_f32ebc29c1249f 173
+  s_2912b411655335::t_7b4014ac5dbd89 193
+  s_2912b411655335::t_11732bbf41e210 185
+  s_2912b411655335::t_f005442d56fda1 18-24
+src/client/screens/LobbyScreen.tsx
+  s_2912b411655335::t_3ffec2c97aff26 82-96
+  s_2912b411655335::t_0841f8f4fd5eac 16-17
+README.md
+  s_2912b411655335::t_5f31ce2a6b22cf 36
+src/client/session.ts
+  s_2912b411655335::t_867aaf4cf29325 102
+  s_2912b411655335::t_fee301113cff12 203
+  s_2912b411655335::t_8a69d58f15b9c5 3,8
+  s_2912b411655335::t_8bd12526cc4530 42
+  s_2912b411655335::t_4d5228cde4b1a9 77,79
+src/server/bot.ts
+  s_2912b411655335::t_f6f19512113593 211
+  s_2912b411655335::t_de215ba5b81849 2
+  s_2912b411655335::t_cfa83a3b1d8b5c 249-260
+src/server/index.ts
+  s_2912b411655335::t_88ff81d9bf22e5 150-153
+src/server/match.ts
+  s_2912b411655335::t_13c7cfb6eedfa9 161
+  s_2912b411655335::t_630e8c358546a8 541
+  s_2912b411655335::t_3bab63071e4160 101
+  s_2912b411655335::t_cfe27524cf590f 218-221
+  s_2912b411655335::t_745e9fea83da71 20
+src/client/styles.css
+  s_2912b411655335::t_bb99cec0bcd17d 362-396
+src/client/render.ts
+  s_2912b411655335::t_7414e44b318515 199
+src/client/net.ts
+  s_2912b411655335::t_ab364e6b542a60 174
+  s_2912b411655335::t_4c1d206a059ec0 312-315
+scripts/e2e.ts
+  s_2912b411655335::t_9157b21a3bf89d 569-611
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "0279862188c246973246e956519cd65bb3801cd3",
+  "prompts": {},
+  "sessions": {
+    "s_2912b411655335": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "110d0bd3-8231-46c2-bba5-f36c7272d47f",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Enes Poyraz <epoyraz.eth@googlemail.com>"
+    }
+  }
+}
