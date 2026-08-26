@@ -30,7 +30,9 @@ export function startServer(port: number): Promise<RunningServer> {
   const manager = new LobbyManager()
 
   const httpServer = createServer((req, res) => {
-    if (req.url === '/healthz') {
+    // /healthz is swallowed by Google Frontend on run.app domains, so the
+    // health endpoint answers on /api/health as well.
+    if (req.url === '/healthz' || req.url === '/api/health') {
       res.writeHead(200, { 'content-type': 'application/json' })
       res.end(JSON.stringify({ ok: true, lobbies: manager.lobbies.size }))
       return

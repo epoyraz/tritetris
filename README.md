@@ -2,6 +2,8 @@
 
 Competitive real-time **3-player** Tetris over WebSockets. Three players battle on separate boards; clearing lines sends garbage to a random living opponent; last player standing wins. Server-authoritative, with client-side prediction for zero-latency controls.
 
+**▶ Play it live:** https://tritetris-jwsst6awpa-ew.a.run.app (create a lobby, share the code — or add bots and play solo)
+
 ## Quick start
 
 ```bash
@@ -69,6 +71,22 @@ JSON envelopes `{type, message_id, timestamp, payload}` over a single WebSocket 
 | ↑ / X | rotate CW |
 | Z / Ctrl | rotate CCW |
 | C / Shift | hold |
+
+## Deploying (Cloud Run)
+
+The included `Dockerfile` builds the client and runs the server on `$PORT`. Deploy with:
+
+```bash
+gcloud run deploy tritetris --source . --region europe-west1 \
+  --allow-unauthenticated --max-instances 1 --min-instances 0 \
+  --timeout 3600 --session-affinity --memory 512Mi
+```
+
+Notes:
+- `--max-instances 1` is required — lobbies and matches are in-memory, so all traffic must hit one instance.
+- `--timeout 3600` keeps WebSockets alive up to an hour; when Cloud Run recycles a socket, the client's automatic reconnect restores the match.
+- Google Frontend swallows `/healthz` on `run.app` domains; use `/api/health` instead.
+- Scale-to-zero means an idle service cold-starts in a few seconds on the first visit; active matches keep the instance warm.
 
 ## Design decisions (where the spec left room)
 
