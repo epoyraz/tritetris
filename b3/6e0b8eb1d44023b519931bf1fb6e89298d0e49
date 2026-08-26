@@ -1,0 +1,21 @@
+Dockerfile
+  s_2912b411655335::t_d04b5e134df509 1-13
+.dockerignore
+  s_2912b411655335::t_262a2be05ff816 1-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "b36e0b8eb1d44023b519931bf1fb6e89298d0e49",
+  "prompts": {},
+  "sessions": {
+    "s_2912b411655335": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "110d0bd3-8231-46c2-bba5-f36c7272d47f",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Enes Poyraz <epoyraz.eth@googlemail.com>"
+    }
+  }
+}
