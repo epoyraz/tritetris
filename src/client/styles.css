@@ -359,6 +359,41 @@ kbd {
   font-size: 11px;
 }
 
+.rules-panel {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 18px;
+  margin-top: 20px;
+}
+
+.rules-label {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+}
+
+.rule-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.rule-toggle.rule-on {
+  color: var(--ok);
+  border-color: rgba(39, 224, 92, 0.4);
+}
+
+.rule-toggle.rule-off {
+  color: var(--danger);
+  border-color: rgba(255, 59, 87, 0.4);
+}
+
 .lobby-message {
   color: var(--muted);
   margin: 22px 0;

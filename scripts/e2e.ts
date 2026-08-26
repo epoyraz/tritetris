@@ -566,6 +566,49 @@ async function main(): Promise<void> {
   check('bots: lobby with only bots left is deleted', health2.lobbies === 0, `lobbies=${health2.lobbies}`)
   h1.close()
 
+  // ---------- rules: hard drop disabled ----------
+  const r1 = await TC.connect(url, 'Rina')
+  r1.send('create_lobby', { display_name: 'Rina' })
+  const rl = await r1.waitFor('lobby_created')
+  r1.playerId = rl.player_id
+  const rulesDefault = await r1.waitFor('lobby_state', () => true)
+  check('rules: hard drop enabled by default', rulesDefault.rules.allow_hard_drop === true)
+  r1.send('set_rules', { rules: { allow_hard_drop: false } })
+  const rulesOff = await r1.waitFor('lobby_state', (p) => p.rules.allow_hard_drop === false, 5000)
+  check('rules: host can disable hard drop', !!rulesOff)
+  r1.send('add_bot', { tier: 'hard' })
+  r1.send('add_bot', { tier: 'medium' })
+  await r1.waitFor('lobby_state', (p) => p.players.length === 3)
+  const ruleBots = (await r1.waitFor('lobby_state', (p) => p.players.length === 3)).players.filter((x) => x.is_bot)
+  const ruleMark = r1.mark()
+  r1.send('set_ready', { ready: true })
+  const ruleStart = await r1.waitFor('match_start', () => true, 8000, ruleMark)
+  check('rules: match_start carries the rule', ruleStart.rules.allow_hard_drop === false)
+  r1.beginMatch(ruleStart.match_id, ruleStart.seed, ruleStart.start_at)
+  r1.installMatchHandlers()
+  await sleep(600)
+  // A HARD_DROP input must be rejected by the server even if a client sends it.
+  r1.seq++
+  r1.send('player_input', {
+    match_id: ruleStart.match_id,
+    sequence: r1.seq,
+    action: 'HARD_DROP',
+    client_time: Date.now(),
+    tick: Math.max(0, Math.floor((Date.now() - ruleStart.start_at) / 16.6667)),
+  })
+  await sleep(1500)
+  const humanState = await r1.waitFor('player_state', (p) => p.player_id === r1.playerId && p.tick > 60, 8000)
+  check('rules: server rejects HARD_DROP input', humanState.pieces_placed === 0, `pieces=${humanState.pieces_placed}`)
+  const softBot = await r1.waitFor(
+    'player_state',
+    (p) => p.player_id === ruleBots[0].player_id && p.pieces_placed >= 2,
+    30000,
+  )
+  check('rules: bots place pieces via soft drop only', softBot.pieces_placed >= 2)
+  r1.send('leave_lobby', {})
+  await sleep(400)
+  r1.close()
+
   await server.close()
   // Give ws sockets a beat to fully unwind; avoids a libuv teardown assert on Windows.
   await sleep(500)

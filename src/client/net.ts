@@ -171,7 +171,7 @@ class Net {
           const me = getState().me
           this.session.resetForMatch(ms.match_id, ms.seed, ms.start_at, me?.playerId ?? '')
         }
-        this.session.start(ms.players)
+        this.session.start(ms.players, ms.rules)
         setState({ phase: 'GAME' })
         break
       }
@@ -307,6 +307,10 @@ class Net {
 
   addBot(tier: 'easy' | 'medium' | 'hard'): void {
     this.send('add_bot', { tier })
+  }
+
+  setRules(rules: { allow_hard_drop?: boolean }): void {
+    this.send('set_rules', { rules })
   }
 
   removeBot(playerId: string): void {

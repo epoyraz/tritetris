@@ -33,6 +33,7 @@ npm run typecheck
 
 - **Lobby flow**: create/join by 6-char code, exactly 3 slots, ready-check, synchronized 3-second countdown, host star, latency display, copy-code button.
 - **Bots** 🤖: the host can fill empty slots with bots in three tiers — **Easy** (slow, sloppy placements), **Medium** (solid greedy stacking), **Hard** (fast, near-optimal, uses hold). Bots are always ready and auto-accept rematches.
+- **Match rules**: the host can toggle **hard drop off** in the lobby. The rule is enforced server-side (HARD_DROP inputs are rejected), the client's Space key goes inert with a "HARD DROP OFF" HUD indicator, and bots adapt by soft-dropping to the floor and waiting out the lock delay. Rules persist across rematches.
 - **Guideline Tetris**: SRS rotation with wall kicks, 7-bag randomizer (same piece sequence for all players), hold, 5-piece preview, ghost piece, lock delay (500 ms, 15 move-resets), DAS/ARR handling, soft/hard drop, gravity speed-up every 30 s.
 - **Attack system** (competitive mode): singles/doubles/triples/tetris → 1/2/3/4, T-spin mini/single/double/triple → 1/2/4/6, back-to-back +1, combo table, perfect clear +10. Garbage targets a random living opponent, arrives after 700 ms, and **cancels** against pending incoming garbage first.
 - **Elimination & spectating**: top-out (blocked spawn) eliminates; eliminated players spectate; pending attacks aimed at a dead player are cancelled, not redirected.

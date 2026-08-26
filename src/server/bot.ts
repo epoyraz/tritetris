@@ -1,5 +1,5 @@
 import { Engine } from '../shared/engine'
-import { BOARD_H, BOARD_W, TICK_MS } from '../shared/constants'
+import { BOARD_H, BOARD_W, LOCK_DELAY_MS, TICK_MS } from '../shared/constants'
 import { PIECE_CELLS } from '../shared/pieces'
 import type { BotTier, InputAction, PieceType, S2C, S2CType } from '../shared/types'
 import type { ServerMatch } from './match'
@@ -208,8 +208,7 @@ export class ServerBot {
     }
     if (candidates.length === 0) {
       // Nowhere to go: drop in place and hope.
-      this.act('HARD_DROP')
-      this.schedule(this.cfg.thinkMinMs)
+      this.executePlan([], this.engine.active.x)
       return
     }
     const pool = candidates.slice(0, Math.max(1, Math.min(this.cfg.topN, candidates.length)))
@@ -247,7 +246,17 @@ export class ServerBot {
       next()
       return
     }
-    this.act('HARD_DROP')
-    this.schedule(this.cfg.thinkMinMs + Math.random() * (this.cfg.thinkMaxMs - this.cfg.thinkMinMs))
+    if (this.match.rules.allow_hard_drop) {
+      this.act('HARD_DROP')
+      this.schedule(this.cfg.thinkMinMs + Math.random() * (this.cfg.thinkMaxMs - this.cfg.thinkMinMs))
+      return
+    }
+    // Hard drop disabled: ride soft drops to the floor, then let lock delay run.
+    if (active.y < this.engine.ghostY()) {
+      this.act('SOFT_DROP')
+      this.timer = setTimeout(() => this.executePlan([], targetX, guard), Math.max(this.cfg.actionMs, 25))
+      return
+    }
+    this.schedule(LOCK_DELAY_MS + 120 + this.cfg.thinkMinMs)
   }
 }

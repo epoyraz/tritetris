@@ -196,6 +196,7 @@ export function drawOwn(ctx: CanvasRenderingContext2D, session: GameSession, myN
       ['SPEED', `LV ${speedLevelAtTick(e.tick)}`],
       ['PIECES', String(e.piecesPlaced)],
     ]
+    if (!session.rules.allow_hard_drop) hud.push(['HARD DROP', 'OFF'])
     hud.forEach(([label, value], i) => {
       const y = 146 + i * 42
       ctx.fillStyle = '#8a93a6'

@@ -15,6 +15,13 @@ export type LobbyStatus = 'WAITING' | 'READY_CHECK' | 'COUNTDOWN' | 'PLAYING' | 
 
 export type BotTier = 'easy' | 'medium' | 'hard'
 
+/** Match rules, set by the host in the lobby and enforced by the server. */
+export interface MatchRules {
+  allow_hard_drop: boolean
+}
+
+export const DEFAULT_RULES: MatchRules = { allow_hard_drop: true }
+
 export interface Envelope<T extends string = string, P = unknown> {
   type: T
   message_id: string
@@ -163,6 +170,7 @@ export interface C2S {
   resync_request: { match_id: string }
   add_bot: { tier: BotTier }
   remove_bot: { player_id: string }
+  set_rules: { rules: Partial<MatchRules> }
 }
 
 // ---- server -> client payloads ----
@@ -174,6 +182,7 @@ export interface LobbyStatePayload {
   players: LobbyPlayerInfo[]
   required_players: number
   rematch_votes: string[]
+  rules: MatchRules
 }
 
 export interface StateCorrectionPayload {
@@ -181,6 +190,7 @@ export interface StateCorrectionPayload {
   seed: number
   start_at: number
   server_now: number
+  rules: MatchRules
   your_player_id: string
   your_tick: number
   your_engine: SerializedEngine
@@ -205,6 +215,7 @@ export interface S2C {
     initial_piece_queue: PieceType[]
     start_at: number
     server_now: number
+    rules: MatchRules
   }
   player_state: PlayerStatePayload
   attack_created: AttackCreatedPayload

@@ -17,6 +17,7 @@ import type {
   AttackCreatedPayload,
   C2S,
   MatchPlayerInfo,
+  MatchRules,
   PlayerStatePayload,
   PlayerStats,
   S2C,
@@ -97,6 +98,7 @@ export class ServerMatch {
 
   constructor(
     handles: MatchPlayerHandle[],
+    readonly rules: MatchRules,
     private cb: ServerMatchCallbacks,
   ) {
     this.seed = Math.floor(Math.random() * 0xffffffff) >>> 0
@@ -156,6 +158,7 @@ export class ServerMatch {
       initial_piece_queue: initialQueue,
       start_at: this.startAt,
       server_now: Date.now(),
+      rules: { ...this.rules },
     })
     this.loopTimer = setInterval(() => this.loop(), 16)
     this.cb.onStarted()
@@ -212,6 +215,10 @@ export class ServerMatch {
     if (!mp.inputBucket.take()) return
     const validActions = ['MOVE_LEFT', 'MOVE_RIGHT', 'SOFT_DROP', 'HARD_DROP', 'ROTATE_CW', 'ROTATE_CCW', 'HOLD']
     if (!validActions.includes(p.action)) return
+    if (p.action === 'HARD_DROP' && !this.rules.allow_hard_drop) {
+      mp.invalidInputs++
+      return
+    }
     if (!Number.isInteger(p.sequence) || p.sequence <= mp.lastSeq) return // monotonic, dedupes
     if (!Number.isInteger(p.tick) || p.tick < 0) return
     if (p.tick < mp.lastClaimedTick) return // inputs may not go back in time
@@ -531,6 +538,7 @@ export class ServerMatch {
       seed: this.seed,
       start_at: this.startAt,
       server_now: Date.now(),
+      rules: { ...this.rules },
       your_player_id: mp.handle.playerId,
       your_tick: mp.engine.tick,
       your_engine: mp.engine.serialize(),

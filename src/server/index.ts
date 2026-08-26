@@ -147,6 +147,10 @@ export function startServer(port: number): Promise<RunningServer> {
         if (lobby && player) lobby.removeBot(player, String(p.player_id ?? ''))
         else sendError(conn.ws, 'NOT_IN_LOBBY', 'You are not in a lobby.')
         break
+      case 'set_rules':
+        if (lobby && player) lobby.setRules(player, (p.rules ?? {}) as Record<string, boolean>)
+        else sendError(conn.ws, 'NOT_IN_LOBBY', 'You are not in a lobby.')
+        break
       case 'resync_request': {
         if (lobby?.match && conn.playerId) {
           const correction = lobby.match.handleResyncRequest(conn.playerId)

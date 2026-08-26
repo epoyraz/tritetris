@@ -13,6 +13,8 @@ export function LobbyScreen(): JSX.Element {
   const missing = REQUIRED_PLAYERS - lobby.players.length
   const self = lobby.players.find((p) => p.player_id === me.playerId)
   const readyEnabled = lobby.status === 'READY_CHECK' || lobby.status === 'FINISHED'
+  const amHost = self?.host === true
+  const rulesLocked = lobby.status === 'COUNTDOWN'
 
   const copyCode = (): void => {
     void navigator.clipboard?.writeText(lobby.join_code).then(() => {
@@ -75,6 +77,21 @@ export function LobbyScreen(): JSX.Element {
             </div>
           )
         })}
+      </div>
+
+      <div className="rules-panel">
+        <span className="rules-label">MATCH RULES</span>
+        <div className="rule-row">
+          <span>Hard drop (Space)</span>
+          <button
+            className={`btn btn-ghost rule-toggle ${lobby.rules.allow_hard_drop ? 'rule-on' : 'rule-off'}`}
+            disabled={!amHost || rulesLocked}
+            title={amHost ? 'Toggle hard drop for the next match' : 'Only the host can change rules'}
+            onClick={() => net.setRules({ allow_hard_drop: !lobby.rules.allow_hard_drop })}
+          >
+            {lobby.rules.allow_hard_drop ? 'ENABLED' : 'DISABLED'}
+          </button>
+        </div>
       </div>
 
       <p className="lobby-message">

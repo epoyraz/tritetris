@@ -1,6 +1,7 @@
 import type { WebSocket } from 'ws'
 import { REQUIRED_PLAYERS } from '../shared/constants'
-import type { BotTier, LobbyPlayerInfo, LobbyStatePayload, LobbyStatus, S2C, S2CType } from '../shared/types'
+import { DEFAULT_RULES } from '../shared/types'
+import type { BotTier, LobbyPlayerInfo, LobbyStatePayload, LobbyStatus, MatchRules, S2C, S2CType } from '../shared/types'
 import { BOT_NAMES, ServerBot, botDisplayName } from './bot'
 import { ServerMatch, type MatchPlayerHandle } from './match'
 import { joinCode, send, sendError, sessionToken, uuid } from './util'
@@ -42,6 +43,7 @@ export class Lobby {
   players: LobbyPlayer[] = []
   match: ServerMatch | null = null
   rematchVotes = new Set<string>()
+  rules: MatchRules = { ...DEFAULT_RULES }
   private activeBots: ServerBot[] = []
 
   constructor(private manager: LobbyManager) {}
@@ -200,7 +202,21 @@ export class Lobby {
       players: this.playerInfos(),
       required_players: REQUIRED_PLAYERS,
       rematch_votes: [...this.rematchVotes],
+      rules: { ...this.rules },
     }
+  }
+
+  setRules(player: LobbyPlayer, patch: Partial<MatchRules>): void {
+    if (!player.host) {
+      sendError(player.conn?.ws, 'NOT_HOST', 'Only the host can change match rules.')
+      return
+    }
+    if (this.status === 'COUNTDOWN' || this.status === 'PLAYING') {
+      sendError(player.conn?.ws, 'MATCH_ALREADY_STARTED', 'Rules cannot change mid-match.')
+      return
+    }
+    if (typeof patch.allow_hard_drop === 'boolean') this.rules.allow_hard_drop = patch.allow_hard_drop
+    this.broadcastState()
   }
 
   broadcast<T extends S2CType>(type: T, payload: S2C[T]): void {
@@ -248,7 +264,7 @@ export class Lobby {
       isBot: p.isBot,
       getWs: () => p.conn?.ws ?? null,
     }))
-    const match = new ServerMatch(handles, {
+    const match = new ServerMatch(handles, { ...this.rules }, {
       onAborted: () => this.cancelCountdown('A player disconnected during the countdown.'),
       onStarted: () => {
         this.status = 'PLAYING'

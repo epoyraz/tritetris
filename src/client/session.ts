@@ -1,9 +1,11 @@
 import { Engine, type EngineEvent } from '../shared/engine'
 import { TICK_MS } from '../shared/constants'
+import { DEFAULT_RULES } from '../shared/types'
 import type {
   C2S,
   InputAction,
   MatchPlayerInfo,
+  MatchRules,
   PlayerStatePayload,
   S2C,
   StateCorrectionPayload,
@@ -37,6 +39,7 @@ export class GameSession {
   startAtServer = 0
   started = false
   myId = ''
+  rules: MatchRules = { ...DEFAULT_RULES }
   players: MatchPlayerInfo[] = []
   opponents = new Map<string, PlayerStatePayload>()
   eliminated = new Map<string, number>()
@@ -71,8 +74,9 @@ export class GameSession {
     this.lockHashes.clear()
   }
 
-  start(players: MatchPlayerInfo[]): void {
+  start(players: MatchPlayerInfo[], rules: MatchRules): void {
     this.players = players
+    this.rules = { ...rules }
     this.started = true
   }
 
@@ -95,6 +99,7 @@ export class GameSession {
   act(action: InputAction): void {
     if (!this.engine || !this.started || !this.engine.alive) return
     if (this.serverNow() < this.startAtServer) return
+    if (action === 'HARD_DROP' && !this.rules.allow_hard_drop) return
     const tick = this.curTick()
     this.drive(this.engine.applyAction(action, tick))
     this.seq++
@@ -195,6 +200,7 @@ export class GameSession {
     this.seed = c.seed
     this.startAtServer = c.start_at
     this.myId = c.your_player_id
+    this.rules = { ...c.rules }
     this.players = c.players
     this.started = true
     this.engine = Engine.deserialize(c.your_engine)
