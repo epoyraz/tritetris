@@ -1,0 +1,19 @@
+scripts/target-stats.ts
+  s_2912b411655335::t_1a434d27d71bb5 1-164
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.24",
+  "base_commit_sha": "64c24645852b58b69a5ed666aec9ee8221b42045",
+  "prompts": {},
+  "sessions": {
+    "s_2912b411655335": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "110d0bd3-8231-46c2-bba5-f36c7272d47f",
+        "model": "claude-fable-5"
+      },
+      "human_author": "Enes Poyraz <epoyraz.eth@googlemail.com>"
+    }
+  }
+}
